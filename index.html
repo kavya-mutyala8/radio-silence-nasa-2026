@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Radio Silence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg" aria-hidden="true"><i></i><i></i><i></i><u></u></div>
+    <div id="app">
+      <header class="top">
+        <div class="brand">
+          <span class="logo">📡</span>
+          <div>
+            <h1>Radio Silence</h1>
+            <p>A Moon-outpost mission trainer</p>
+          </div>
+        </div>
+        <div class="hud">
+          <span class="tag">NASA Space Apps project</span>
+          <span class="pill">Sol <b id="sol">1</b> of <b id="total"></b></span>
+          <span class="clock"
+            ><span class="ring" id="ring"><span>⏱️</span></span
+            ><span><small>Day timer</small><b id="timer"></b></span
+          ></span>
+        </div>
+      </header>
+
+      <main id="game">
+        <section class="trail" aria-label="Mission progress">
+          <div class="tl">
+            <b id="tlt"></b
+            ><span>A solar-system progress trail, not a flight path</span>
+          </div>
+          <div class="rail">
+            <div class="line"><i id="fill"></i></div>
+            <div class="stop" style="--x: 0%">
+              <i style="background: #e6a93c"></i><small>Sun</small>
+            </div>
+            <div class="stop" style="--x: 33.3%">
+              <i style="background: #4aa3c8"></i><small>Earth</small>
+            </div>
+            <div class="stop" style="--x: 66.6%">
+              <i style="background: #b9bfd6"></i><small>Moon</small>
+            </div>
+            <div class="stop" style="--x: 100%">
+              <i style="background: #e0705a"></i><small>Mars</small>
+            </div>
+            <div class="rocket" id="rocket">🚀</div>
+          </div>
+        </section>
+
+        <h2 class="hero">Your outpost. Your call.</h2>
+        <p class="dim" id="hsub"></p>
+        <section class="meters" id="meters"></section>
+
+        <div class="mv">
+          <h2>Choose your next move</h2>
+          <span class="pill warm" id="moves"></span>
+        </div>
+        <div class="cols">
+          <div>
+            <div class="acts" id="acts"></div>
+            <div class="endrow">
+              <button class="cta" id="endsol" type="button"></button>
+              <p id="drain"></p>
+            </div>
+          </div>
+          <aside>
+            <section class="card mc">
+              <small class="b">📡 You’re not alone</small>
+              <h3>Earth is listening.</h3>
+              <p>
+                Need a hint? Send a radio message. Keep your crew safe while you
+                wait.
+              </p>
+              <button class="blue" id="mc" type="button">
+                📡 Ask Mission Control
+              </button>
+              <b class="warm">Reply takes 3 days</b>
+              <p class="dim" id="mcnote">
+                A game rule, not real Moon radio timing.
+              </p>
+            </section>
+            <section class="card">
+              <h3>📋 Mission log</h3>
+              <div id="log"></div>
+            </section>
+          </aside>
+        </div>
+      </main>
+
+      <main id="end" hidden>
+        <section class="ehero">
+          <div>
+            <span class="badge" id="badge"></span>
+            <h2 id="etitle"></h2>
+            <p id="etext"></p>
+          </div>
+          <img id="mascot" alt="Astronaut mascot" width="260" height="260" />
+        </section>
+        <h2 class="sh">Your mission, decoded.</h2>
+        <p class="dim">
+          See how your choices connect to real space exploration.
+        </p>
+        <div class="two">
+          <section class="card">
+            <small class="y">In your mission</small>
+            <h3>What you did</h3>
+            <ul id="did"></ul>
+          </section>
+          <section class="card">
+            <small class="b">In real life</small>
+            <h3>What NASA did</h3>
+            <ul id="nasa"></ul>
+            <p class="dim" id="esrc"></p>
+          </section>
+        </div>
+        <section class="card plan">
+          <h3 id="ptitle"></h3>
+          <p id="ptext"></p>
+          <div class="endrow">
+            <button class="cta" id="again" type="button"></button>
+            <p>Start fresh on sol 1. Take what you learned.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer class="moon">
+      <b>MOON OUTPOST / SMALL CHOICES. BIG DISCOVERIES.</b>
+      <p>
+        Built for NASA Space Apps • An independent learning game, not endorsed
+        by NASA.
+      </p>
+    </footer>
+    <script src="data.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>
