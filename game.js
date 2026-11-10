@@ -3,6 +3,10 @@ const SOLS = 10,
   SOL_SECONDS = 60,
   MOVES = 2,
   LOW = 25;
+const CRISIS_SOL = 4,
+  REPLY_SOLS = 3;
+const CRISIS_SHOCK = { oxygen: -25, power: -20 }; // game estimates, not NASA numbers
+const clean = (s) => String(s || "").replace(/^\d+\.\s*/, "");
 const DRAIN = 3; // difficulty: multiplies every daily drain from the data files (tested with a simulation)
 const M = ["power", "oxygen", "food", "radiation"];
 const INFO = {
@@ -52,6 +56,11 @@ const S = {
   logs: [],
   over: false,
   timer: null,
+  crisis: false,
+  askedSol: null,
+  replySol: null,
+  adapter: false,
+  alert: "",
 };
 const fx = (a) =>
   M.filter((m) => a[m])
@@ -122,6 +131,7 @@ function build() {
 }
 
 function blockReason(a) {
+  if (a.locked && !S.adapter) return "Locked until Mission Control replies.";
   if (S.moves <= 0) return "No moves left. End the sol.";
   const m = M.find((k) => S.v[k] + (a[k] || 0) < 0);
   return m
@@ -165,6 +175,24 @@ function update() {
     b.disabled = !!r;
     b.querySelector("p").textContent = r || a.why || "";
   });
+  $("#alert").hidden = !S.alert;
+  $("#alert").textContent = S.alert;
+  $("#mc").disabled = !S.crisis || S.askedSol !== null || S.over;
+  $("#mcnote").textContent =
+    S.askedSol !== null
+      ? "Message sent on sol " +
+        S.askedSol +
+        ". " +
+        (S.adapter
+          ? "The reply has arrived."
+          : S.replySol > SOLS
+            ? "The reply arrives after your mission ends."
+            : "The reply arrives on sol " + S.replySol + ".")
+      : S.crisis
+        ? "Send one message. The reply takes " +
+          REPLY_SOLS +
+          " sols (a game rule, not real Moon radio timing)."
+        : "Mission Control can help when a crisis hits.";
   $("#endsol").textContent = "→ End sol " + S.sol;
   const drain = M.filter((m) => drainOf(m) < 0).map(
     (m) => -drainOf(m) + " " + INFO[m].chip.toLowerCase(),
@@ -231,6 +259,30 @@ function endSol() {
   S.t = SOL_SECONDS;
   S.moves = MOVES;
   S.solUsed = [];
+  const c = GAME_DATA.crisis || {};
+  if (S.sol === CRISIS_SOL) {
+    S.crisis = true;
+    M.forEach((m) => {
+      S.v[m] = clamp(S.v[m] + (CRISIS_SHOCK[m] || 0));
+    });
+    S.alert =
+      "⚠️ Crisis on sol " +
+      S.sol +
+      ": " +
+      (c.title || "a real NASA crisis") +
+      ". " +
+      clean((c.what_happened || [])[1]) +
+      " Ask Mission Control for help.";
+    const hit = M.find((m) => S.v[m] <= 0);
+    if (hit) return finish(false, hit);
+  }
+  if (S.replySol === S.sol) {
+    S.adapter = true;
+    S.alert =
+      "📡 Mission Control replied: " +
+      clean((c.what_nasa_did || [])[1]) +
+      " New move unlocked: Build CO₂ adapter.";
+  }
   update();
 }
 
@@ -297,6 +349,22 @@ function finish(win, m) {
           (a.why || ""),
       };
     });
+  if (S.crisis)
+    did.unshift({
+      icon: "📡",
+      title:
+        S.askedSol === null
+          ? "You never asked Mission Control"
+          : "You asked Mission Control on sol " + S.askedSol,
+      text:
+        S.askedSol === null
+          ? "You faced the crisis on your own. In 1970 the team on the ground helped Apollo 13 find a fix."
+          : "The reply arrived on sol " +
+            S.replySol +
+            (S.replySol > SOLS
+              ? ", too late to help."
+              : ". Delays like this are why crews must be ready to decide alone."),
+    });
   if (!win)
     did.unshift({
       icon: INFO[m].icon,
@@ -353,13 +421,25 @@ function init() {
   });
   $("#total").textContent = SOLS;
   $("#tlt").textContent = "YOUR " + SOLS + "-SOL MISSION";
+  GAME_DATA.actions.push({
+    name: "Build CO₂ adapter",
+    icon: "🧰",
+    why: "Join the square canister to the round hole with a hose, plastic bags, a cue card and duct tape.",
+    power: -5,
+    oxygen: 30,
+    food: 0,
+    radiation: 0,
+    locked: true,
+  });
   build();
   update();
   $("#endsol").onclick = endSol;
   $("#again").onclick = () => location.reload();
   $("#mc").onclick = () => {
-    $("#mcnote").textContent =
-      "Coming in the next version: this will send a message, and the reply arrives 3 days later.";
+    if (!S.crisis || S.askedSol !== null) return;
+    S.askedSol = S.sol;
+    S.replySol = S.sol + REPLY_SOLS;
+    update();
   };
   S.timer = setInterval(() => {
     if (S.over) return;
