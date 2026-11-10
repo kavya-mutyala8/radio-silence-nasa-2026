@@ -18,9 +18,9 @@ const CRISIS_DATA = {
     what_happened: [
         "1. Apollo 13 launched on April 11, 1970, carrying three astronauts: Jim Lovell, Jack Swigert and Fred Haise.",
 
-        "2. On April 13, an oxygen tank in the Service Module exploded after an electrical fault.",
+        "2. On April 13, about 56 hours into the mission, an oxygen tank in the Service Module ruptured, and the crew heard a loud bang.",
 
-        "3. The explosion damaged the spacecraft and caused the loss of electrical power and oxygen supplies.",
+        "3. The incident damaged the spacecraft and caused the loss of electrical power and oxygen supplies.",
 
         "4. The crew abandoned their planned Moon landing and moved into the Lunar Module Aquarius.",
 
@@ -34,12 +34,12 @@ const CRISIS_DATA = {
     what_nasa_did: [
         "8. NASA Mission Control worked with engineers to develop a solution for connecting incompatible carbon dioxide filter canisters.",
 
-        "9. Engineers designed an emergency adapter using available spacecraft materials, including plastic bags, cardboard and duct tape.",
+        "9. Engineers designed an emergency adapter using available spacecraft materials, including a spacesuit cooling garment and hose, plastic bags, a cue card from the flight plan and duct tape.",
 
         "10. The astronauts conserved electrical power and water, followed Mission Control instructions and safely returned to Earth on April 17, 1970."
     ],
 
-    source: "https://www.nasa.gov/missions/apollo/apollo-13-the-successful-failure/"
+    source: "https://www.nasa.gov/history/houston-weve-had-a-problem/"
 
 };
 
