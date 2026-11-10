@@ -30,17 +30,17 @@ const DEBRIEF_DATA = {
         {
             title: "NASA – Growing Plants in Space",
             description:
-                "NASA researches growing plants in space to support future exploration missions. Plants can provide fresh food and contribute to life-support research.",
+                "NASA researches growing plants in space to support future exploration missions. Plants can provide fresh food and contribute to astronaut health and long-duration life-support research.",
             source:
                 "https://www.nasa.gov/exploration-research-and-technology/growing-plants-in-space/"
         },
 
         {
-            title: "NASA – Radiation Protection",
+            title: "NASA – Space Radiation Protection",
             description:
-                "NASA studies shielding methods, including the use of lunar surface materials, to help protect astronauts from harmful space radiation.",
+                "NASA studies the health risks of space radiation and develops methods to monitor and protect astronauts during missions beyond Earth's protective atmosphere.",
             source:
-                "https://science.nasa.gov/science-research/heliophysics/how-nasa-will-protect-astronauts-from-space-radiation-at-the-moon/"
+                "https://www.nasa.gov/hrp/hazard-space-radiation/"
         }
 
     ]
