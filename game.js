@@ -3,6 +3,7 @@ const SOLS = 10,
   SOL_SECONDS = 60,
   MOVES = 2,
   LOW = 25;
+const DRAIN = 3; // difficulty: multiplies every daily drain from the data files (tested with a simulation)
 const M = ["power", "oxygen", "food", "radiation"];
 const INFO = {
   power: {
@@ -60,6 +61,22 @@ const list = (a) =>
   a.length < 2
     ? a.join("")
     : a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
+const drainOf = (m) => Math.round(GAME_DATA.meters[m].perSol * DRAIN);
+function linkify(el, text) {
+  el.textContent = "";
+  String(text)
+    .split(/(https?:\/\/\S+)/)
+    .forEach((part) => {
+      if (!/^https?:\/\//.test(part)) return el.append(part);
+      const url = part.replace(/[.,;)]+$/, ""),
+        a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = "NASA page ↗";
+      el.append(a, part.slice(url.length));
+    });
+}
 const lowMeters = () => M.filter((m) => S.v[m] <= LOW);
 
 function build() {
@@ -79,7 +96,7 @@ function build() {
       '<button type="button" class="why">Why this number?</button><p class="src" hidden></p>';
     c.querySelector(".why").onclick = () => {
       const p = c.querySelector(".src");
-      p.textContent = GAME_DATA.meters[m].source || "Source coming soon.";
+      linkify(p, GAME_DATA.meters[m].source || "Source coming soon.");
       p.hidden = !p.hidden;
     };
     $("#meters").appendChild(c);
@@ -149,8 +166,8 @@ function update() {
     b.querySelector("p").textContent = r || a.why || "";
   });
   $("#endsol").textContent = "→ End sol " + S.sol;
-  const drain = M.filter((m) => GAME_DATA.meters[m].perSol < 0).map(
-    (m) => -GAME_DATA.meters[m].perSol + " " + INFO[m].chip.toLowerCase(),
+  const drain = M.filter((m) => drainOf(m) < 0).map(
+    (m) => -drainOf(m) + " " + INFO[m].chip.toLowerCase(),
   );
   $("#drain").textContent =
     "Ending a sol uses " +
@@ -201,7 +218,7 @@ function useAction(i) {
 function endSol() {
   if (S.over) return;
   M.forEach((m) => {
-    S.v[m] = clamp(S.v[m] + GAME_DATA.meters[m].perSol);
+    S.v[m] = clamp(S.v[m] + drainOf(m));
   });
   const dead = M.find((m) => S.v[m] <= 0);
   if (dead) return finish(false, dead);
@@ -226,6 +243,11 @@ function items(sel, rows) {
     li.querySelector(".ii").textContent = r.icon || "🛰️";
     li.querySelector("b").textContent = r.title;
     li.querySelector("p").textContent = r.text;
+    if (r.source) {
+      const s = document.createElement("p");
+      linkify(s, r.source);
+      li.querySelector("div").appendChild(s);
+    }
     ul.appendChild(li);
   });
 }
@@ -288,8 +310,18 @@ function finish(win, m) {
       text: "You used no moves. Try acting early next time.",
     });
   items("#did", did.slice(0, 3));
-  items("#nasa", (d.nasa || []).slice(0, 3));
-  $("#esrc").textContent = d.source ? "Source: " + d.source : "";
+  items(
+    "#nasa",
+    (d.nasa || [])
+      .slice(0, 3)
+      .map((r) => ({
+        icon: r.icon,
+        title: r.title,
+        text: r.text || r.description,
+        source: r.source,
+      })),
+  );
+  linkify($("#esrc"), d.source ? "Source: " + d.source : "");
   if (win) {
     $("#ptitle").textContent = "Ready for another Moon shift?";
     $("#ptext").textContent =

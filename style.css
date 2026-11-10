@@ -591,3 +591,8 @@ button:focus-visible {
     transition: none !important;
   }
 }
+
+a {
+  color: var(--sky);
+  font-weight: 800;
+}
