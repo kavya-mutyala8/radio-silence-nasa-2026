@@ -16,14 +16,17 @@ const meterNames = ["power", "oxygen", "food", "radiation"];
 
 meterNames.forEach((name) => {
     assert(meters[name], `${name} meter is missing`);
+
     assert(
         meters[name].start >= 0 && meters[name].start <= 100,
         `${name} starting value is invalid`
     );
+
     assert(
         typeof meters[name].perSol === "number",
         `${name} daily change is invalid`
     );
+
     assert(
         typeof meters[name].source === "string" &&
         meters[name].source.length > 0,
@@ -76,15 +79,34 @@ console.log("\n4. Testing Debrief...");
 assert(debrief.success, "Success message is missing");
 assert(debrief.fail, "Failure message is missing");
 assert(Array.isArray(debrief.nasa));
-assert(debrief.nasa.length === 3, "Exactly three NASA cards are required");
+
+assert(
+    debrief.nasa.length === 4,
+    "Exactly four NASA cards are required"
+);
 
 debrief.nasa.forEach((card) => {
     assert(card.title, "NASA card title is missing");
     assert(card.description, "NASA card description is missing");
-    assert(card.source.startsWith("https://"), "NASA source link is invalid");
+    assert(
+        typeof card.source === "string" &&
+        card.source.startsWith("https://"),
+        "NASA source link is invalid"
+    );
 });
 
-console.log("PASS: Debrief and three NASA cards are valid.");
+// Check the new communication-delay card
+const communicationCard = debrief.nasa.find((card) =>
+    card.title.toLowerCase().includes("communication")
+);
+
+assert(
+    communicationCard,
+    "Communication delay NASA card is missing"
+);
+
+console.log("PASS: Debrief and four NASA cards are valid.");
+console.log("PASS: Communication delay card is available.");
 
 
 // Final result

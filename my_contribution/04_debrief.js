@@ -35,15 +35,25 @@ const DEBRIEF_DATA = {
                 "https://www.nasa.gov/exploration-research-and-technology/growing-plants-in-space/"
         },
 
+
         {
             title: "NASA – Space Radiation Protection",
             description:
                 "NASA studies the health risks of space radiation and develops methods to monitor and protect astronauts during missions beyond Earth's protective atmosphere.",
             source:
                 "https://www.nasa.gov/hrp/hazard-space-radiation/"
+        },
+
+        {
+            title: "NASA – Communication Delays in Space",
+            description:
+                "Radio signals take approximately 1.3 seconds one-way to travel from Earth to the Moon. For Mars, the one-way communication delay ranges from approximately 3 to 22 minutes, depending on the distance between the planets. This means astronauts may need to make important decisions independently while waiting for Mission Control. A round-trip message to Mars can take approximately 6 to 44 minutes.",
+            source:
+                "https://science.nasa.gov/blog/speaking-percys-language-how-to-talk-so-perseverance-will-listen/"
         }
 
     ]
+
 
 };
 
