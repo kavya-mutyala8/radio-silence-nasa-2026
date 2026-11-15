@@ -53,7 +53,7 @@ Every fact in `data.js` is stored with its source. The starting values, daily ch
 ## Use of AI (Super Intelligence)
 
 - **Code:** We used Claude (Anthropic) to help write and fix parts of the game code in `game.js` and `data.js`. This is also noted in comments at the top of those files.
-- **Images:** [[EDIT THIS LINE: say which illustrations in assets/ are AI-generated, which tool made them, and that they carry a visible "AI" watermark. Delete this note after editing.]]
+- **Images:** The astronaut and mascot illustrations in `assets/` were generated with Figma's AI tools and carry a visible "AI" watermark.
 - **Idea and design:** The game idea, the four-system balance and the delayed Mission Control reply came from our team.
 - **NASA facts:** We checked the NASA facts against the NASA pages listed above.
 - No NASA logos, flags or mission patches are used or modified in any AI-generated content.
