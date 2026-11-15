@@ -607,3 +607,17 @@ a {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.mascot-wrap {
+  position: relative;
+  display: inline-block;
+}
+.mascot-wrap small {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  font-size: 0.7rem;
+  color: var(--dim);
+  background: #0b1026cc;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
